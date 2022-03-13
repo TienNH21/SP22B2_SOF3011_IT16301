@@ -25,10 +25,19 @@ public class HelloServlet extends HttpServlet {
 			.forward(request, response);
 	}
 
-	protected void doPost(
+	public void init() {
+		System.out.println("Init Servlet ...");
+	}
+	
+	protected void service(
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
-		doGet(request, response);
+		System.out.println("Service ...");
+		super.service(request, response);
+	}
+	
+	public void destroy() {
+		System.out.println("Destroy...");
 	}
 }
