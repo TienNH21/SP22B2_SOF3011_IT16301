@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,11 +7,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/HelloServlet")
-public class HelloServlet extends HttpServlet {
+@WebServlet({
+	"/users/index",
+	"/users/create",
+	"/users/store",
+	"/users/edit",
+	"/users/update",
+	"/users/delete",
+	"/users/show",
+})
+public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public HelloServlet() {
+    public UserServlet() {
         super();
     }
 
@@ -19,25 +26,12 @@ public class HelloServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
-		String name = request.getParameter("ho_ten");
-		request.setAttribute("name", name);
-		request.getRequestDispatcher("/views/layout.jsp")
-			.forward(request, response);
 	}
 
-	public void init() {
-		System.out.println("Init Servlet ...");
-	}
-	
-	protected void service(
+	protected void doPost(
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
-		System.out.println("Service ...");
-		super.service(request, response);
 	}
-	
-	public void destroy() {
-		System.out.println("Destroy...");
-	}
+
 }
