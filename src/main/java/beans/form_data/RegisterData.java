@@ -9,6 +9,21 @@ public class RegisterData {
 	private int gioiTinh;
 	private int loaiKH;
 	
+	public RegisterData() {
+	}
+	
+	public RegisterData(String hoTen, String diaChi, String sdt, String email, String password, int gioiTinh,
+			int loaiKH) {
+		super();
+		this.hoTen = hoTen;
+		this.diaChi = diaChi;
+		this.sdt = sdt;
+		this.email = email;
+		this.password = password;
+		this.gioiTinh = gioiTinh;
+		this.loaiKH = loaiKH;
+	}
+
 	// Getter & Setter
 	public String getHoTen() {
 		return hoTen;
