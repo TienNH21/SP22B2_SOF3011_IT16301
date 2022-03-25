@@ -10,12 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import beans.form_data.RegisterData;
+import dao.UserDAO;
+import entites.User;
+import utils.JpaUtil;
 
 @WebServlet({
 	"/admin/users/index",
 	"/admin/users/create",
-	"/users/store",
+	"/admin/users/store",
 	"/admin/users/edit",
 	"/admin/users/update",
 	"/admin/users/delete",
@@ -23,8 +28,11 @@ import beans.form_data.RegisterData;
 })
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private UserDAO userDAO;
+	
     public UserServlet() {
         super();
+        this.userDAO = new UserDAO();
     }
 
 	protected void doGet(
@@ -90,6 +98,10 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		request.setAttribute("view",
+			"/views/admin/users/create.jsp");
+		request.getRequestDispatcher("/views/layout.jsp")
+		.forward(request, response);
 	}
 
 	private void edit(
@@ -114,6 +126,20 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		try {
+			User entity = new User();
+			BeanUtils.populate(entity, request.getParameterMap());
+
+			this.userDAO.create(entity);
+			response.sendRedirect("/SP22B2_SOF3011_IT16301"
+				+ "/admin/users/index");
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			// Thông báo lỗi
+			response.sendRedirect("/SP22B2_SOF3011_IT16301"
+				+ "/admin/users/create");
+		}
 	}
 
 	private void update(
