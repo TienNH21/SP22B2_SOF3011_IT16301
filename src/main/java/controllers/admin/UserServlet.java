@@ -73,19 +73,7 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
-		List<RegisterData> ds = new ArrayList<RegisterData>();
-		
-		RegisterData obj1 = new RegisterData("A", "HN", 
-			"012", "abc@gmail.com", "123456", 1, 0),
-		obj2 = new RegisterData("A", "HN", 
-			"012", "abc@gmail.com", "123456", 1, 0),
-		obj3 = new RegisterData("A", "HN", 
-			"012", "abc@gmail.com", "123456", 1, 0);
-
-		ds.add(obj1);
-		ds.add(obj2);
-		ds.add(obj3);
-		
+		List<User> ds = this.userDAO.all();		
 		request.setAttribute("ds", ds);
 		request.setAttribute("view",
 			"/views/admin/users/index.jsp");
@@ -108,6 +96,14 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		User entity = this.userDAO.findById(id);
+		request.setAttribute("user", entity);
+		request.setAttribute("view",
+			"/views/admin/users/edit.jsp");
+		request.getRequestDispatcher("/views/layout.jsp")
+		.forward(request, response);
 	}
 
 	private void show(
@@ -120,6 +116,19 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		User entity = this.userDAO.findById(id);
+		try {
+			this.userDAO.delete(entity);
+			// TODO: Thông báo thành công
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: Thông báo lỗi
+		}
+
+		response.sendRedirect("/SP22B2_SOF3011_IT16301"
+			+ "/admin/users/index");
 	}
 
 	private void store(
@@ -146,5 +155,19 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		try {
+			User entity = new User();
+			BeanUtils.populate(entity, request.getParameterMap());
+
+			this.userDAO.update(entity);
+			response.sendRedirect("/SP22B2_SOF3011_IT16301"
+				+ "/admin/users/index");
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			// Thông báo lỗi
+			response.sendRedirect("/SP22B2_SOF3011_IT16301"
+				+ "/admin/users/create");
+		}
 	}
 }

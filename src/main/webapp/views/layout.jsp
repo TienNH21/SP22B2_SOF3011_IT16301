@@ -50,8 +50,8 @@
 	
 	<!-- Body -->
 	<div class="row">
-		<div class="col-2 bg-secondary">Sidebar</div>
-		<div class="col-10 bg-primary">
+		<div class="col-2">Sidebar</div>
+		<div class="col-10">
 			<jsp:include page="${ view }"></jsp:include>
 		</div>
 	</div>
