@@ -1,6 +1,8 @@
 package entites;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.GeneratorType;
@@ -36,6 +38,9 @@ public class User implements Serializable {
 	private String password;
 
 	private String sdt;
+	
+	@OneToMany(mappedBy="user")
+	private List<Category> categories;
 
 	public User() {
 	}
