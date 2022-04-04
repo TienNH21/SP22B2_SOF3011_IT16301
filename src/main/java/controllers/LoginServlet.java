@@ -7,9 +7,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dao.UserDAO;
+import entites.User;
+import utils.EncryptUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+	private UserDAO userDAO;
+	
+	public LoginServlet() {
+		this.userDAO = new UserDAO();
+	}
 	protected void doGet(
 		HttpServletRequest request,
 		HttpServletResponse response
@@ -25,12 +35,14 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email"),
 			pwd = request.getParameter("password");
 
-		System.out.println(email + "-" + pwd);
-		if (
-			email.equalsIgnoreCase("tiennh21@fpt.edu.vn")
-			&& pwd.equals("123123")
-		) {
-			System.out.println("Đăng nhập thành công");
+		User u = this.userDAO.findByEmail(email);
+		boolean check = EncryptUtil.check(pwd, u.getPassword());
+		HttpSession session = request.getSession();
+		if (check == true) {
+			// Đăng nhập thành công
+			session.setAttribute("user", u);
+		} else {
+			// Đăng nhập thất bại
 		}
 	}
 }
